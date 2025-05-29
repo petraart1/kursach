@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Менеджер финансов</string>
+    
+    <!-- Навигация -->
+    <string name="navigation_home">Главная</string>
+    <string name="navigation_transactions">Транзакции</string>
+    <string name="navigation_statistics">Статистика</string>
+    <string name="navigation_profile">Профиль</string>
+    
+    <!-- Авторизация -->
+    <string name="login">Войти</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="name">Имя</string>
+    <string name="demo_mode">Демо режим</string>
+    
+    <!-- Профиль -->
+    <string name="profile">Профиль</string>
+    <string name="logout">Выйти</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="current_password">Текущий пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="admin_panel">Панель администратора</string>
+    <string name="view_all_users">Просмотр всех пользователей</string>
+    <string name="export_data">Экспорт данных</string>
+    
+    <!-- Транзакции -->
+    <string name="add_transaction">Добавить транзакцию</string>
+    <string name="transaction_title">Название</string>
+    <string name="transaction_amount">Сумма</string>
+    <string name="transaction_description">Описание</string>
+    <string name="income">Доход</string>
+    <string name="expense">Расход</string>
+    <string name="all">Все</string>
+    
+    <!-- Статистика -->
+    <string name="total_statistics">Общая статистика</string>
+    <string name="total_income">Общий доход</string>
+    <string name="total_expense">Общий расход</string>
+    <string name="balance">Баланс</string>
+    <string name="expense_structure">Структура расходов</string>
+    <string name="balance_dynamics">Динамика баланса</string>
+    
+    <!-- Сообщения -->
+    <string name="error_required">Обязательное поле</string>
+    <string name="error_invalid_email">Некорректный email</string>
+    <string name="error_password_mismatch">Пароли не совпадают</string>
+    <string name="error_short_password">Пароль должен быть не менее 6 символов</string>
+    <string name="error_auth">Ошибка авторизации</string>
+    <string name="success_profile_update">Профиль обновлен</string>
+    <string name="error_profile_update">Ошибка обновления профиля</string>
+    <string name="success_transaction_add">Транзакция добавлена</string>
+    <string name="error_transaction_add">Ошибка добавления транзакции</string>
+</resources>
+ 
