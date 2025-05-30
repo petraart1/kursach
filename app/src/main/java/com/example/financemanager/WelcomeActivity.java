@@ -53,8 +53,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void startDemoMode() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("DEMO_MODE", true);
+        Intent intent = new Intent(this, DemoMainActivity.class);
         startActivity(intent);
     }
 } 

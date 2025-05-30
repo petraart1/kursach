@@ -34,6 +34,14 @@
             android:name=".MainActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".DemoMainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminPanelActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

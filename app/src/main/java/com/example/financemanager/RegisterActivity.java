@@ -86,13 +86,19 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     showProgress(false);
                     if (task.isSuccessful()) {
+                        Toast.makeText(RegisterActivity.this,
+                                "Регистрация успешна!",
+                                Toast.LENGTH_SHORT).show();
                         // Регистрация успешна, переходим в главное активити
-                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         finish();
                     } else {
                         // Ошибка регистрации
                         Toast.makeText(RegisterActivity.this,
-                                getString(R.string.error_auth),
+                                "Ошибка регистрации: " + (task.getException() != null ? 
+                                        task.getException().getMessage() : "Неизвестная ошибка"),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });

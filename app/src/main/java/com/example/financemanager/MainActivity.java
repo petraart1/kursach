@@ -9,12 +9,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.financemanager.databinding.ActivityMainBinding;
 import com.example.financemanager.repository.UserRepository;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -31,13 +28,12 @@ public class MainActivity extends AppCompatActivity {
         userRepository = new UserRepository();
         checkUserStatus();
         setupNavigation();
-        setupFab();
         if (savedInstanceState == null) {
             loadFragment(new TransactionsFragment());
         }
     }
 
-    private void checkUserStatus() {
+    protected void checkUserStatus() {
         if (!userRepository.isUserLoggedIn() && !isDemoMode()) {
             // Если пользователь не авторизован и не в демо-режиме, перенаправляем на экран входа
             startActivity(new Intent(this, WelcomeActivity.class));
@@ -64,29 +60,20 @@ public class MainActivity extends AppCompatActivity {
             
             if (itemId == R.id.navigation_home) {
                 fragment = new TransactionsFragment();
-                binding.fab.setVisibility(View.VISIBLE);
             } else if (itemId == R.id.navigation_statistics) {
                 fragment = new StatisticsFragment();
-                binding.fab.setVisibility(View.GONE);
+            } else if (itemId == R.id.navigation_ai_assistant) {
+                fragment = new AIAssistantFragment();
             } else if (itemId == R.id.navigation_profile) {
                 fragment = new ProfileFragment();
-                binding.fab.setVisibility(View.GONE);
             } else if (itemId == R.id.navigation_settings) {
                 fragment = new SettingsFragment();
-                binding.fab.setVisibility(View.GONE);
             } else {
                 return false;
             }
 
             loadFragment(fragment);
             return true;
-        });
-    }
-
-    private void setupFab() {
-        binding.fab.setOnClickListener(v -> {
-            AddTransactionDialog dialog = new AddTransactionDialog();
-            dialog.show(getSupportFragmentManager(), "AddTransactionDialog");
         });
     }
 

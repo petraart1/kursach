@@ -58,22 +58,19 @@ public class TransactionsFragment extends Fragment implements AddTransactionDial
     }
 
     private void setupFilterChips() {
-        binding.typeFilterChipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.isEmpty()) {
-                // Если ни один чип не выбран, выбираем "Все"
-                binding.allTypeChip.setChecked(true);
-                return;
-            }
-
-            Chip checkedChip = group.findViewById(checkedIds.get(0));
-            if (checkedChip == null) return;
-
-            if (checkedChip.getId() == R.id.allTypeChip) {
-                adapter.setTransactions(allTransactions);
-            } else if (checkedChip.getId() == R.id.incomeChip) {
-                filterTransactions(TransactionType.INCOME);
-            } else if (checkedChip.getId() == R.id.expenseChip) {
-                filterTransactions(TransactionType.EXPENSE);
+        binding.typeFilterChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.allTypeChip) {
+                adapter.submitList(allTransactions);
+            } else if (checkedId == R.id.incomeChip) {
+                List<Transaction> filtered = allTransactions.stream()
+                        .filter(t -> t.getType() == TransactionType.INCOME)
+                        .collect(Collectors.toList());
+                adapter.submitList(filtered);
+            } else if (checkedId == R.id.expenseChip) {
+                List<Transaction> filtered = allTransactions.stream()
+                        .filter(t -> t.getType() == TransactionType.EXPENSE)
+                        .collect(Collectors.toList());
+                adapter.submitList(filtered);
             }
         });
     }
@@ -88,59 +85,25 @@ public class TransactionsFragment extends Fragment implements AddTransactionDial
 
     public void refreshTransactions() {
         if (isDemoMode) {
-            allTransactions = new ArrayList<>(DemoDataProvider.getDemoTransactions());
-            updateTransactionsList();
+            allTransactions = DemoDataProvider.getDemoTransactions();
+            adapter.submitList(allTransactions);
         } else {
-            transactionRepository.getTransactions()
-                .addOnSuccessListener(querySnapshot -> {
-                    allTransactions = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : querySnapshot) {
-                        Transaction transaction = document.toObject(Transaction.class);
-                        transaction.setId(document.getId());
-                        allTransactions.add(transaction);
-                    }
-                    updateTransactionsList();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), 
-                        R.string.error_loading_transactions, Toast.LENGTH_SHORT).show();
-                });
-        }
-    }
-
-    private void filterTransactions(TransactionType type) {
-        List<Transaction> filtered = allTransactions.stream()
-                .filter(transaction -> transaction.getType() == type)
-                .collect(Collectors.toList());
-        adapter.setTransactions(filtered);
-    }
-
-    private void updateTransactionsList() {
-        // Обновляем список в соответствии с текущим фильтром
-        Chip checkedChip = binding.typeFilterChipGroup.findViewById(
-                binding.typeFilterChipGroup.getCheckedChipId());
-        
-        if (checkedChip == null || checkedChip.getId() == R.id.allTypeChip) {
-            adapter.setTransactions(allTransactions);
-        } else if (checkedChip.getId() == R.id.incomeChip) {
-            filterTransactions(TransactionType.INCOME);
-        } else if (checkedChip.getId() == R.id.expenseChip) {
-            filterTransactions(TransactionType.EXPENSE);
+            transactionRepository.getUserTransactions()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        allTransactions = queryDocumentSnapshots.toObjects(Transaction.class);
+                        adapter.submitList(allTransactions);
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), 
+                                "Ошибка при загрузке транзакций", 
+                                Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 
     @Override
     public void onTransactionAdded(Transaction transaction) {
-        if (!isDemoMode) {
-            // TODO: Сохранение транзакции в Firebase
-            Toast.makeText(requireContext(), "Функция добавления пока не реализована", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Добавляем транзакцию в начало списка
-        allTransactions.add(0, transaction);
-        updateTransactionsList();
-        Toast.makeText(requireContext(), "Транзакция добавлена", Toast.LENGTH_SHORT).show();
+        refreshTransactions();
     }
 
     private MainActivity getMainActivity() {

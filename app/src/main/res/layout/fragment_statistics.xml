@@ -32,27 +32,27 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/totalIncomeText"
+                    android:id="@+id/totalIncomeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Общий доход: ₽0"
+                    android:text="₽0"
                     android:textColor="@android:color/holo_green_dark" />
 
                 <TextView
-                    android:id="@+id/totalExpenseText"
+                    android:id="@+id/totalExpenseValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Общий расход: ₽0"
+                    android:text="₽0"
                     android:textColor="@android:color/holo_red_dark" />
 
                 <TextView
-                    android:id="@+id/balanceText"
+                    android:id="@+id/balanceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Баланс: ₽0"
+                    android:text="₽0"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
