@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">kursach</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_stats">Статистика</string>
+    <string name="nav_assistant">Ассистент</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="login">Войти</string>
+    <string name="register">Регистрация</string>
+    <string name="demo">Демо-режим</string>
+    <string-array name="categories">
+        <item>Продукты</item>
+        <item>Транспорт</item>
+        <item>Развлечения</item>
+        <item>Здоровье</item>
+        <item>Подарки</item>
+        <item>Другое</item>
+    </string-array>
+    <string-array name="theme_options">
+        <item>Светлая тема</item>
+        <item>Тёмная тема</item>
+        <item>Системная тема</item>
+    </string-array>
+</resources>
