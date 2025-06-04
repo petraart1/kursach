@@ -35,20 +35,33 @@ import android.text.TextUtils;
 import java.util.Calendar;
 
 public class DemoHomeActivity extends AppCompatActivity {
+    private static final String KEY_SELECTED_NAV = "selected_nav";
+    private int selectedNavId = R.id.nav_home;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_home);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        if (savedInstanceState != null) {
+            selectedNavId = savedInstanceState.getInt(KEY_SELECTED_NAV, R.id.nav_home);
+        }
         if (bottomNavigationView != null) {
             bottomNavigationView.setOnItemSelectedListener(this::onNavItemSelected);
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+            bottomNavigationView.setSelectedItemId(selectedNavId);
         }
-        showHome();
+        showFragmentForNav(selectedNavId);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_NAV, selectedNavId);
     }
 
     private boolean onNavItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        selectedNavId = id;
         if (id == R.id.nav_home) {
             showHome();
             return true;
@@ -60,6 +73,16 @@ public class DemoHomeActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void showFragmentForNav(int navId) {
+        if (navId == R.id.nav_home) {
+            showHome();
+        } else if (navId == R.id.nav_settings) {
+            showDemoSettings();
+        } else {
+            showHome(); // fallback
+        }
     }
 
     private void showHome() {

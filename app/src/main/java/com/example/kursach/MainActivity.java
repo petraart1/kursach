@@ -6,12 +6,20 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String KEY_SELECTED_NAV = "selected_nav";
+    private int selectedNavId = R.id.nav_home;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        if (savedInstanceState != null) {
+            selectedNavId = savedInstanceState.getInt(KEY_SELECTED_NAV, R.id.nav_home);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
@@ -28,10 +36,18 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, selectedFragment)
                     .commit();
+                selectedNavId = itemId;
                 return true;
             }
             return false;
         });
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+        bottomNavigationView.setSelectedItemId(selectedNavId);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_NAV, selectedNavId);
     }
 }
