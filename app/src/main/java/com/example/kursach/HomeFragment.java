@@ -31,6 +31,7 @@ import java.util.Locale;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
@@ -176,11 +177,22 @@ public class HomeFragment extends Fragment {
         static class TransactionViewHolder extends RecyclerView.ViewHolder {
             public TransactionViewHolder(@NonNull View itemView) { super(itemView); }
             public void bind(Transaction t, OnDeleteListener onDeleteListener) {
-                ((android.widget.TextView)itemView.findViewById(R.id.tv_amount)).setText(String.format(Locale.getDefault(), "%+.2f ₽", t.amount));
-                ((android.widget.TextView)itemView.findViewById(R.id.tv_category)).setText(t.category);
-                ((android.widget.TextView)itemView.findViewById(R.id.tv_description)).setText(t.description);
+                TextView tvAmount = itemView.findViewById(R.id.tv_amount);
+                String amountStr;
+                int color;
+                if ("income".equals(t.type)) {
+                    amountStr = String.format(Locale.getDefault(), "+%.2f ₽", t.amount);
+                    color = 0xFF388E3C; // зелёный
+                } else {
+                    amountStr = String.format(Locale.getDefault(), "-%.2f ₽", Math.abs(t.amount));
+                    color = 0xFFD32F2F; // красный
+                }
+                tvAmount.setText(amountStr);
+                tvAmount.setTextColor(color);
+                ((TextView)itemView.findViewById(R.id.tv_category)).setText(t.category);
+                ((TextView)itemView.findViewById(R.id.tv_description)).setText(t.description);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                ((android.widget.TextView)itemView.findViewById(R.id.tv_date)).setText(sdf.format(new Date(t.timestamp)));
+                ((TextView)itemView.findViewById(R.id.tv_date)).setText(sdf.format(new Date(t.timestamp)));
                 itemView.setOnLongClickListener(v -> {
                     if (onDeleteListener != null) onDeleteListener.onDelete(t);
                     return true;

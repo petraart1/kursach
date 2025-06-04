@@ -53,12 +53,10 @@ public class HomeViewModel extends ViewModel {
                 }
                 List<Transaction> list = new ArrayList<>();
                 if (value != null) {
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        if (dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            Transaction t = dc.getDocument().toObject(Transaction.class);
-                            t.id = dc.getDocument().getId();
-                            list.add(t);
-                        }
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : value.getDocuments()) {
+                        Transaction t = doc.toObject(Transaction.class);
+                        t.id = doc.getId();
+                        list.add(t);
                     }
                 }
                 transactions.setValue(list);
