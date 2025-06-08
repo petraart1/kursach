@@ -44,4 +44,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.blackfizz:eazegraph:1.2.2@aar")
+    implementation("com.nineoldandroids:library:2.4.0")
 }

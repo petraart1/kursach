@@ -26,11 +26,25 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pie_chart"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp">
+            <org.eazegraph.lib.charts.PieChart
+                android:id="@+id/eaze_pie_chart_expense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="8dp">
+            <org.eazegraph.lib.charts.PieChart
+                android:id="@+id/eaze_pie_chart_income"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/legend_layout"
@@ -40,9 +54,15 @@
             android:layout_marginBottom="16dp"/>
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/line_chart"
+            android:id="@+id/line_chart_expense"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_chart_income"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_marginBottom="8dp"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView> 

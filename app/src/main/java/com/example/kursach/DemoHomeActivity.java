@@ -33,6 +33,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.text.TextUtils;
 import java.util.Calendar;
+import android.content.SharedPreferences;
 
 public class DemoHomeActivity extends AppCompatActivity {
     private static final String KEY_SELECTED_NAV = "selected_nav";
@@ -297,6 +298,9 @@ public class DemoHomeActivity extends AppCompatActivity {
                     }
                     if (lastMode != newMode) {
                         lastMode = newMode;
+                        // Сохраняем выбранную тему
+                        SharedPreferences prefs = requireContext().getSharedPreferences("settings", 0);
+                        prefs.edit().putInt("night_mode", newMode).apply();
                         AppCompatDelegate.setDefaultNightMode(newMode);
                     }
                 }

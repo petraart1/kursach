@@ -1,6 +1,7 @@
 package com.example.kursach;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ public class SettingsFragment extends Fragment {
                 }
                 if (lastMode != newMode) {
                     lastMode = newMode;
+                    SharedPreferences prefs = requireContext().getSharedPreferences("settings", 0);
+                    prefs.edit().putInt("night_mode", newMode).apply();
                     AppCompatDelegate.setDefaultNightMode(newMode);
                     if (getActivity() != null) {
                         View nav = getActivity().findViewById(R.id.bottom_navigation);

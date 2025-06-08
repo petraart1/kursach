@@ -54,10 +54,17 @@ public class HomeFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         viewModel.getTransactions().observe(getViewLifecycleOwner(), new Observer<List<Transaction>>() {
+            private int lastSize = -1;
             @Override
             public void onChanged(List<Transaction> transactions) {
+                boolean added = lastSize >= 0 && transactions.size() > lastSize;
                 adapter.submitList(transactions);
                 swipeRefreshLayout.setRefreshing(false);
+                if (added) {
+                    RecyclerView recycler = getView().findViewById(R.id.recycler_transactions);
+                    if (recycler != null) recycler.scrollToPosition(0);
+                }
+                lastSize = transactions.size();
             }
         });
         viewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> {
@@ -95,15 +102,44 @@ public class HomeFragment extends Fragment {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_transaction, null);
         EditText etAmount = dialogView.findViewById(R.id.et_amount);
         Spinner spCategory = dialogView.findViewById(R.id.sp_category);
+        EditText etCustomCategory = dialogView.findViewById(R.id.et_custom_category);
         EditText etDescription = dialogView.findViewById(R.id.et_description);
         EditText etDate = dialogView.findViewById(R.id.et_date);
         RadioGroup rgType = dialogView.findViewById(R.id.rg_type);
         RadioButton rbIncome = dialogView.findViewById(R.id.rb_income);
         RadioButton rbExpense = dialogView.findViewById(R.id.rb_expense);
 
-        ArrayAdapter<CharSequence> catAdapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, android.R.layout.simple_spinner_item);
+        // По умолчанию расход
+        rbExpense.setChecked(true);
+
+        // Категории по умолчанию (расход)
+        ArrayAdapter<CharSequence> catAdapter = ArrayAdapter.createFromResource(getContext(), R.array.expense_categories, android.R.layout.simple_spinner_item);
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(catAdapter);
+
+        // Смена категорий при выборе типа
+        rgType.setOnCheckedChangeListener((group, checkedId) -> {
+            int arrayId = (checkedId == R.id.rb_income) ? R.array.income_categories : R.array.expense_categories;
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), arrayId, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spCategory.setAdapter(adapter);
+            etCustomCategory.setVisibility(View.GONE);
+        });
+
+        // Показывать поле для своей категории при выборе 'Другое'
+        spCategory.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                String selected = spCategory.getSelectedItem().toString();
+                if ("Другое".equals(selected)) {
+                    etCustomCategory.setVisibility(View.VISIBLE);
+                } else {
+                    etCustomCategory.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
 
         final Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
@@ -121,6 +157,10 @@ public class HomeFragment extends Fragment {
             .setPositiveButton("Добавить", (dialog, which) -> {
                 String amountStr = etAmount.getText().toString();
                 String category = spCategory.getSelectedItem().toString();
+                if ("Другое".equals(category)) {
+                    String custom = etCustomCategory.getText().toString().trim();
+                    if (!TextUtils.isEmpty(custom)) category = custom;
+                }
                 String description = etDescription.getText().toString();
                 long timestamp = calendar.getTimeInMillis();
                 String type = (rgType.getCheckedRadioButtonId() == R.id.rb_income) ? "income" : "expense";

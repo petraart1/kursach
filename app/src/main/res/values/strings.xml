@@ -20,4 +20,18 @@
         <item>Тёмная тема</item>
         <item>Системная тема</item>
     </string-array>
+    <string-array name="income_categories">
+        <item>Зарплата</item>
+        <item>Подарки</item>
+        <item>Инвестиции</item>
+        <item>Другое</item>
+    </string-array>
+    <string-array name="expense_categories">
+        <item>Продукты</item>
+        <item>Транспорт</item>
+        <item>Развлечения</item>
+        <item>Здоровье</item>
+        <item>Подарки</item>
+        <item>Другое</item>
+    </string-array>
 </resources>

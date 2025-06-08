@@ -14,13 +14,13 @@
             android:id="@+id/rb_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Доход"
-            android:checked="true"/>
+            android:text="Доход"/>
         <RadioButton
             android:id="@+id/rb_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Расход"/>
+            android:text="Расход"
+            android:checked="true"/>
     </RadioGroup>
 
     <EditText
@@ -34,6 +34,14 @@
         android:id="@+id/sp_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/et_custom_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Своя категория"
+        android:visibility="gone"
         android:layout_marginTop="8dp"/>
 
     <EditText
